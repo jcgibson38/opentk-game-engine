@@ -40,7 +40,7 @@ namespace JGameEngine.RenderEngine
 
         private JMousePicker picker;
 
-        JTerrain terrain;
+        JPerlinTerrain terrain;
 
         /// <summary>
         /// GraphicsMode used for anitaliasing.
@@ -65,7 +65,7 @@ namespace JGameEngine.RenderEngine
             Light = new JLight(new Vector3(0,0,0),new Vector3(1,1,1));
             MasterRenderer = new JMasterRenderer();
 
-            terrain = new JTerrain(0, -1, Loader, new JModelTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Grass.png"))));
+            terrain = new JPerlinTerrain(0, -1, Loader, new JModelTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Grass.png"))));
 
             Entity = new JBoundedEntity(TexturedModel, new Vector3(50, 0, -50), new Vector3(0,0,1), 0.1f, Loader);
             Entity2 = new JBoundedEntity(TexturedModel, new Vector3(100, 0, -50), new Vector3(0, 0, 1), 0.1f, Loader);

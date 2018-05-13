@@ -64,19 +64,24 @@
     <Compile Include="Models\JRawModel.cs" />
     <Compile Include="RenderEngine\JMasterRenderer.cs" />
     <Compile Include="RenderEngine\JEntityRenderer.cs" />
+    <Compile Include="RenderEngine\JNoiseWindow.cs" />
     <Compile Include="RenderEngine\JObjFileLoader.cs" />
+    <Compile Include="RenderEngine\JRenderer2D.cs" />
     <Compile Include="RenderEngine\JTerrainRenderer.cs" />
     <Compile Include="RenderEngine\JVertex.cs" />
     <Compile Include="Shaders\JShaderProgram.cs" />
     <Compile Include="Shaders\JStaticShader.cs" />
+    <Compile Include="Shaders\JStaticShader2D.cs" />
     <Compile Include="Shaders\JTerrainShader.cs" />
     <Compile Include="Terrains\JHeightGenerator.cs" />
-    <Compile Include="Terrains\JTerrain.cs" />
+    <Compile Include="Terrains\JNoise.cs" />
+    <Compile Include="Terrains\JPerlinTerrain.cs" />
     <Compile Include="Textures\JModelTexture.cs" />
     <Compile Include="Utils\JEntityGenerator.cs" />
     <Compile Include="Utils\JFileUtils.cs" />
     <Compile Include="Utils\JMathUtils.cs" />
     <Compile Include="Utils\JMousePicker.cs" />
+    <Compile Include="Utils\JPerlinNoise.cs" />
     <Compile Include="Utils\JVector3.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +103,8 @@
     <Content Include="res\Terrain\Grass.png" />
     <Content Include="res\Terrain\Sand.png" />
     <Content Include="res\Tree\tree_texture_green_brown.png" />
+    <Content Include="Shaders\2DFragmentShader.txt" />
+    <Content Include="Shaders\2DVertexShader.txt" />
     <Content Include="Shaders\fragmentShader.txt" />
     <Content Include="Shaders\TerrainFragmentShader.txt" />
     <Content Include="Shaders\TerrainVertexShader.txt" />

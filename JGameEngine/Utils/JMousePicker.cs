@@ -42,7 +42,7 @@ namespace JGameEngine.Utils
         /// <summary>
         /// The JTerrain the Mouse Ray will intersect with.
         /// </summary>
-        private JTerrain Terrain { get; set; }
+        private JPerlinTerrain Terrain { get; set; }
         
         /// <summary>
         /// The active JGameWindow. We need this to get it's height and width.
@@ -57,7 +57,7 @@ namespace JGameEngine.Utils
         /// <param name="projectionMatrix">The JMasterRenderers Projection Matrix based off of the JCameras properties.</param>
         /// <param name="terrain">The JTerrain the Mouse Ray will intersect with.</param>
         /// <param name="gameWindow">The active JGameWindow. We need this to get it's height and width.</param>
-        public JMousePicker(JCamera camera,Matrix4 projectionMatrix, JTerrain terrain, JGameWindow gameWindow)
+        public JMousePicker(JCamera camera,Matrix4 projectionMatrix, JPerlinTerrain terrain, JGameWindow gameWindow)
         {
             Camera = camera;
             ProjectionMatrix = projectionMatrix;
@@ -175,7 +175,7 @@ namespace JGameEngine.Utils
             if (count >= JConfig.MOUSE_PICKER_RECURSION_COUNT)
             {
                 Vector3 endPoint = GetPointOnRay(ray, half);
-                JTerrain terrain = GetTerrain(endPoint.X,endPoint.Z);
+                JPerlinTerrain terrain = GetTerrain(endPoint.X,endPoint.Z);
                 if(terrain != null)
                 {
                     return endPoint;
@@ -224,7 +224,7 @@ namespace JGameEngine.Utils
         /// <returns></returns>
         private Boolean IsUnderGround(Vector3 point)
         {
-            JTerrain terrain = GetTerrain(point.X, point.Z);
+            JPerlinTerrain terrain = GetTerrain(point.X, point.Z);
             float height = 0;
             if(terrain != null)
             {
@@ -246,7 +246,7 @@ namespace JGameEngine.Utils
         /// <param name="worldX"></param>
         /// <param name="worldZ"></param>
         /// <returns></returns>
-        private JTerrain GetTerrain(float worldX,float worldZ)
+        private JPerlinTerrain GetTerrain(float worldX,float worldZ)
         {
             return Terrain;
         }

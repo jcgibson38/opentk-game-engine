@@ -20,7 +20,7 @@ namespace JGameEngine.RenderEngine
         public Matrix4 projectionMatrix { get; set; }
 
         public Dictionary<JTexturedModel, List<JEntity>> Entities { get; set; }
-        private List<JTerrain> terrains;
+        private List<JPerlinTerrain> terrains;
 
         private static float skyRed { get; set; }
         private static float skyGreen { get; set; }
@@ -31,7 +31,7 @@ namespace JGameEngine.RenderEngine
 
         public JMasterRenderer()
         {
-            terrains = new List<JTerrain>();
+            terrains = new List<JPerlinTerrain>();
             skyRed = 0.5f;
             skyGreen = 0.5f;
             skyBlue = 0.5f;
@@ -86,7 +86,7 @@ namespace JGameEngine.RenderEngine
             terrains.Clear();
         }
 
-        public void processTerrain(JTerrain terrain)
+        public void processTerrain(JPerlinTerrain terrain)
         {
             terrains.Add(terrain);
         }

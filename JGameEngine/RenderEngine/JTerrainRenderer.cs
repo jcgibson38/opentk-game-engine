@@ -21,9 +21,9 @@ namespace JGameEngine.RenderEngine
             shader.stop();
         }
 
-        public void Render(List<JTerrain> terrains)
+        public void Render(List<JPerlinTerrain> terrains)
         {
-            foreach(JTerrain terrain in terrains)
+            foreach(JPerlinTerrain terrain in terrains)
             {
                 PrepareTerrainModel(terrain);
                 LoadModelMatrix(terrain);
@@ -32,7 +32,7 @@ namespace JGameEngine.RenderEngine
             }
         }
 
-        private void PrepareTerrainModel(JTerrain terrain)
+        private void PrepareTerrainModel(JPerlinTerrain terrain)
         {
             JRawModel rawModel = terrain.TerrainModel;
             GL.BindVertexArray(rawModel.vaoID);
@@ -49,7 +49,7 @@ namespace JGameEngine.RenderEngine
             unbindVAOs();
         }
 
-        private void LoadModelMatrix(JTerrain terrain)
+        private void LoadModelMatrix(JPerlinTerrain terrain)
         {
             Matrix4 transformationMatrix = JMathUtils.createTransformationMatrix(new Vector3(terrain.X,0,terrain.Z), 0, 0, 0, 1);
             TerrainShader.loadTransformationMatrix(transformationMatrix);

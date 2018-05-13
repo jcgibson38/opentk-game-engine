@@ -16,6 +16,7 @@ namespace JGameEngine
         {
             Console.WriteLine("Launching Game Window...");
             myWindow = new JGameWindow();
+            //myWindow = new JNoiseWindow();
 
             Console.WriteLine("Updates per second: " + updatesPerSecond);
             Console.WriteLine("Frames per second: " + framesPerSecond);

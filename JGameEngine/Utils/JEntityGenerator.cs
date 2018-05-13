@@ -15,14 +15,14 @@ namespace JGameEngine.Utils
     class JEntityGenerator
     {
         private JLoader Loader { get; set; }
-        private JTerrain Terrain { get; set; }
+        private JPerlinTerrain Terrain { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="loader"></param>
         /// <param name="terrain"></param>
-        public JEntityGenerator(JLoader loader, JTerrain terrain)
+        public JEntityGenerator(JLoader loader, JPerlinTerrain terrain)
         {
             Loader = loader;
             Terrain = terrain;
@@ -46,7 +46,7 @@ namespace JGameEngine.Utils
             JTexturedModel TreeTexturedModel = new JTexturedModel(TreeModel, TreeTexture);
             Random r = new Random();
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 100; i++)
             {
                 float posX = (float)r.NextDouble() * 800;
                 float posZ = -(float)r.NextDouble() * 800;
@@ -55,7 +55,7 @@ namespace JGameEngine.Utils
                 Vector3 orientation = new Vector3((float)r.NextDouble(),0,(float)r.NextDouble());
                 orientation.NormalizeFast();
 
-                JEntity entity = new JEntity(TreeTexturedModel, new Vector3(posX, posY, posZ), orientation, 1);
+                JEntity entity = new JEntity(TreeTexturedModel, new Vector3(posX, posY, posZ), orientation, 0.25f);
                 TreeEntities.Add(entity);
             }
 

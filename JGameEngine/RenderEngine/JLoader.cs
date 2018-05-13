@@ -16,6 +16,17 @@ namespace JGameEngine.RenderEngine
         private List<Int32> vbos = new List<Int32>();
         private List<Int32> textures = new List<Int32>();
 
+        public JRawModel LoadToVAO(float[] positions,float[] textureCoords, uint[] indices)
+        {
+            int vaoID = createVAO();
+            bindIndicesBuffer(indices);
+            storeDataInVAO(0, 3, positions);
+            storeDataInVAO(1, 2, textureCoords);
+            unbindVAO();
+
+            return new JRawModel(vaoID, indices.Length);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -135,6 +146,124 @@ namespace JGameEngine.RenderEngine
             {
                 GL.DeleteTexture(texture);
             }
+        }
+
+        public int LoadBitmapTexture(float[,] noiseMap)
+        {
+            int textureID = GL.GenTexture();
+            textures.Add(textureID);
+
+            GL.BindTexture(TextureTarget.Texture2D, textureID);
+            Bitmap b = new Bitmap(noiseMap.GetLength(0), noiseMap.GetLength(1), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            for (int y = 0; y < b.Height; y++)
+            {
+                for (int x = 0; x < b.Width; x++)
+                {
+                    int rgb = (int)Lerp(0, 255, noiseMap[x, y]);
+                    b.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
+                }
+            }
+
+            BitmapData bitmapData = b.LockBits(new System.Drawing.Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
+            b.UnlockBits(bitmapData);
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+            GL.TextureParameter((int)TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.LinearMipmapLinear);
+            GL.TextureParameter((int)TextureTarget.Texture2D, TextureParameterName.TextureLodBias, -0.4f);
+
+            return textureID;
+        }
+
+        public int LoadColorBitmapTexture(float[,] noiseMap)
+        {
+            int textureID = GL.GenTexture();
+            textures.Add(textureID);
+
+            GL.BindTexture(TextureTarget.Texture2D, textureID);
+            Bitmap b = new Bitmap(noiseMap.GetLength(0), noiseMap.GetLength(1), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            for (int y = 0; y < b.Height; y++)
+            {
+                for (int x = 0; x < b.Width; x++)
+                {
+                    b.SetPixel(x, y, GetColor(noiseMap[x,y]));
+                }
+            }
+
+            BitmapData bitmapData = b.LockBits(new System.Drawing.Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
+            b.UnlockBits(bitmapData);
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+            GL.TextureParameter((int)TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.LinearMipmapLinear);
+            GL.TextureParameter((int)TextureTarget.Texture2D, TextureParameterName.TextureLodBias, -0.4f);
+
+            return textureID;
+        }
+
+        private Color GetColor(float height)
+        {
+            if(height < 0.2)
+            {
+                int r = 11;
+                int g = 76;
+                int b = 93;
+                return Color.FromArgb(r, g, b);
+            }
+            else if(height < 0.3)
+            {
+                int r = 109;
+                int g = 182;
+                int b = 169;
+                return Color.FromArgb(r, g, b);
+            }
+            else if(height < 0.35)
+            {
+                int r = 204;
+                int g = 169;
+                int b = 140;
+                return Color.FromArgb(r, g, b);
+            }
+            else if(height < 0.55)
+            {
+                int r = 122;
+                int g = 137;
+                int b = 70;
+                return Color.FromArgb(r, g, b);
+            }
+            else if (height < 0.65)
+            {
+                int r = 68;
+                int g = 95;
+                int b = 26;
+                return Color.FromArgb(r, g, b);
+            }
+            else if(height < 0.80)
+            {
+                int r = 113;
+                int g = 85;
+                int b = 74;
+                return Color.FromArgb(r, g, b);
+            }
+            else if (height < 0.85)
+            {
+                int r = 110;
+                int g = 96;
+                int b = 96;
+                return Color.FromArgb(r, g, b);
+            }
+            else
+            {
+                int r = 241;
+                int g = 245;
+                int b = 255;
+                return Color.FromArgb(r, g, b);
+            }
+        }
+
+        private float Lerp(int low, int high, float w)
+        {
+            return (1.0f - w) * low + w * high;
         }
     }
 }

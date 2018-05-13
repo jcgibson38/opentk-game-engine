@@ -93,7 +93,7 @@ namespace JGameEngine.Entities
         /// Update the position of JBoundedEntity each frame and update the position of JBoundingSphere to match.
         /// </summary>
         /// <param name="terrain"></param>
-        public void Move(JTerrain terrain)
+        public void Move(JPerlinTerrain terrain)
         {
             if (Destination.IsSet)
             {
@@ -155,7 +155,7 @@ namespace JGameEngine.Entities
         /// 
         /// </summary>
         /// <param name="terrain"></param>
-        public void Translate(JTerrain terrain)
+        public void Translate(JPerlinTerrain terrain)
         {
             float distance = currentSpeed * JGameWindow.Delta;
 

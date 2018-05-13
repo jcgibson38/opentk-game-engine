@@ -10,12 +10,6 @@ namespace JGameEngine.Utils
         {
             Matrix4 returnMatrix = Matrix4.Transpose(Matrix4.CreateTranslation(translation)) * Matrix4.CreateRotationX(rx) * Matrix4.CreateRotationY(-ry) * Matrix4.CreateRotationZ(rz) * Matrix4.CreateScale(scale);
 
-            //Console.WriteLine("CreateTransformationMatrix: ");
-            //Console.WriteLine(Matrix4.CreateRotationX(rx));
-            //Console.WriteLine(Matrix4.CreateRotationY(-ry));
-            //Console.WriteLine(Matrix4.CreateRotationZ(rz));
-            //Console.WriteLine(returnMatrix);
-
             return Matrix4.Transpose(returnMatrix);
         }
 
@@ -33,8 +27,8 @@ namespace JGameEngine.Utils
             float cosThetaZ = orientation.X / orientation.Length;
 
             Matrix4 Rx = new Matrix4(1,     0,          0,              0,
-                                     0,     1,  0,     0,
-                                     0,     0,  1,      0,
+                                     0,     1,          0,              0,
+                                     0,     0,          1,              0,
                                      0,     0,          0,              1);
 
             Matrix4 Ry = new Matrix4(cosThetaY,     0,     sinThetaY,       0,
@@ -42,19 +36,13 @@ namespace JGameEngine.Utils
                                      -sinThetaY,    0,     cosThetaY,       0,
                                      0,             0,      0,              1);
 
-            Matrix4 Rz = new Matrix4(1,     0,     0,  0,
-                                     0,     1,      0,  0,
+            Matrix4 Rz = new Matrix4(1,             0,              0,  0,
+                                     0,             1,              0,  0,
                                      0,             0,              1,  0,
                                      0,             0,              0,  1);
 
             returnMatrix = returnMatrix * Rx * Ry * Rz;
             returnMatrix = returnMatrix * Matrix4.CreateScale(scale);
-
-            //Console.WriteLine("testTransformationMatrix: ");
-            //Console.WriteLine(Rx);
-            //Console.WriteLine(Ry);
-            //Console.WriteLine(Rz);
-            //Console.WriteLine(returnMatrix);
 
             return Matrix4.Transpose(returnMatrix);
         }
@@ -96,6 +84,55 @@ namespace JGameEngine.Utils
             float l2 = ((p3.Z - p1.Z) * (pos.X - p3.X) + (p1.X - p3.X) * (pos.Y - p3.Z)) / det;
             float l3 = 1.0f - l1 - l2;
             return l1 * p1.Y + l2 * p2.Y + l3 * p3.Y;
+        }
+
+        /// <summary>
+        /// Returns a value within the range of [a,b] by linearly interpolating w. Assuming that w is in the range [0,1].
+        /// Lerp(10.0f,30.0f,0.5f) = 20.0f
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="w"></param>
+        /// <returns></returns>
+        public static float Lerp(float a,float b, float w)
+        {
+            return (1.0f - w) * a + w * b;
+        }
+
+        /// <summary>
+        /// Returns a value within the range of [a,b] by linearly interpolating w. Assuming that w is in the range [0,1].
+        /// Lerp(10.0f,30.0f,0.5f) = 20.0f
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="w"></param>
+        /// <returns></returns>
+        public static double Lerp(double a, double b, double w)
+        {
+            return (1.0f - w) * a + w * b;
+        }
+
+        /// <summary>
+        /// Returns a value in the range [0,1] which represents the linear parameter that would produce the interpolant value within the range [a,b].
+        /// InvLerp(10.0f,30.0f,20.0f) = 0.5f
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static float InvLerp(float a, float b, float v)
+        {
+            return (v - a) / (-a + b);
+        }
+
+        /// <summary>
+        /// A cubic function to transform the Terrain Height for a JPerlinTerrain.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns>0.6343434f * x - 1.742424f * x^2 + 2.474747f * x^3</returns>
+        public static float HeightCurve(float x)
+        {
+            return 0.6343434f * x - 1.742424f * x * x + 2.474747f * x * x * x;
         }
     }
 }

@@ -144,7 +144,6 @@ namespace JGameEngine.Shaders
             {
                 toLoad = 1;
             }
-
             GL.Uniform1(location, toLoad);
         }
 

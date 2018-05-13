@@ -4,13 +4,18 @@ using JGameEngine.Textures;
 using JGameEngine.Utils;
 using OpenTK;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace JGameEngine.Terrains
 {
-    public class JTerrain
+    public class JPerlinTerrain
     {
         private static readonly float SIZE = 800;
-        private static readonly int VERTEX_COUNT = 128;
+        private static readonly int VERTEX_COUNT = 100;
+        private static readonly float MAX_HEIGHT = 50.0f;
 
         public float X { get; set; }
         public float Z { get; set; }
@@ -19,7 +24,7 @@ namespace JGameEngine.Terrains
 
         private float[,] heights;
 
-        public JTerrain(int gridX,int gridZ,JLoader loader,JModelTexture texture)
+        public JPerlinTerrain(int gridX, int gridZ, JLoader loader, JModelTexture texture)
         {
             X = gridX * SIZE;
             Z = gridZ * SIZE;
@@ -30,10 +35,10 @@ namespace JGameEngine.Terrains
         private JRawModel generateTerrain(JLoader loader)
         {
             Console.WriteLine("Generating terrain...");
-            JHeightGenerator heightGenerator = new JHeightGenerator();
+            float[,] test = JNoise.GenerateNoiseMap(100, 100, 20.0f, 4, 0.5f, 2.0f);
 
             int count = VERTEX_COUNT * VERTEX_COUNT;
-            heights = new float[VERTEX_COUNT,VERTEX_COUNT];
+            heights = new float[VERTEX_COUNT, VERTEX_COUNT];
             float[] vertices = new float[count * 3];
             float[] normals = new float[count * 3];
             float[] textureCoords = new float[count * 2];
@@ -44,11 +49,11 @@ namespace JGameEngine.Terrains
                 for (int j = 0; j < VERTEX_COUNT; j++)
                 {
                     vertices[vertexPointer * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-                    float height = GetHeight(j, i, heightGenerator);
+                    float height = JMathUtils.HeightCurve(test[j, i]) * MAX_HEIGHT;
                     vertices[vertexPointer * 3 + 1] = height;
                     heights[j, i] = height;
                     vertices[vertexPointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
-                    Vector3 normal = CalculateNormal(j, i, heightGenerator);
+                    Vector3 normal = CalculateNormal(j, i, test);
                     normals[vertexPointer * 3] = normal.X;
                     normals[vertexPointer * 3 + 1] = normal.Y;
                     normals[vertexPointer * 3 + 2] = normal.Z;
@@ -76,27 +81,45 @@ namespace JGameEngine.Terrains
             }
 
             Console.WriteLine("Terrain generation complete...");
+            
             return loader.loadToVAO(vertices, textureCoords, normals, indices);
         }
 
-        private Vector3 CalculateNormal(int x, int z, JHeightGenerator generator)
+        private Vector3 CalculateNormal(int x, int z,float[,] noiseMap)
         {
-            float heightL = GetHeight(x - 1, z, generator);
-            float heightR = GetHeight(x + 1, z, generator);
-            float heightD = GetHeight(x, z - 1, generator);
-            float heightU = GetHeight(x, z + 1, generator);
+            if(x == 0)
+            {
+                x = 1;
+            }
+            if(z == 0)
+            {
+                z = 1;
+            }
+            if( z == (VERTEX_COUNT - 1))
+            {
+                z = (VERTEX_COUNT - 2);
+            }
+            if (x == (VERTEX_COUNT - 1))
+            {
+                x = (VERTEX_COUNT - 2);
+            }
+
+            float heightL = JMathUtils.HeightCurve(noiseMap[x - 1, z]) * MAX_HEIGHT;
+            float heightR = JMathUtils.HeightCurve(noiseMap[x + 1, z]) * MAX_HEIGHT;
+            float heightD = JMathUtils.HeightCurve(noiseMap[x, z - 1]) * MAX_HEIGHT;
+            float heightU = JMathUtils.HeightCurve(noiseMap[x, z + 1]) * MAX_HEIGHT;
 
             Vector3 normal = new Vector3(heightL - heightR, 2f, heightD - heightU);
             normal.Normalize();
             return normal;
         }
 
-        private float GetHeight(int x,int z,JHeightGenerator generator)
+        private float GetHeight(int x, int z, JHeightGenerator generator)
         {
             return generator.GenerateHeight(x, z);
         }
 
-        public float GetHeightOfTerrain(float worldX,float worldZ)
+        public float GetHeightOfTerrain(float worldX, float worldZ)
         {
             float terrainX = worldX - this.X;
             float terrainZ = worldZ - this.Z;
@@ -111,18 +134,18 @@ namespace JGameEngine.Terrains
             float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
             float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
             float answer;
-            
-            if(xCoord <= (1 - zCoord))
+
+            if (xCoord <= (1 - zCoord))
             {
-                answer = JMathUtils.BarryCentric(new Vector3(0, heights[gridX,gridZ], 0), new Vector3(1,
-                            heights[gridX + 1,gridZ], 0), new Vector3(0,
-                            heights[gridX,gridZ + 1], 1), new Vector2(xCoord, zCoord));
+                answer = JMathUtils.BarryCentric(new Vector3(0, heights[gridX, gridZ], 0), new Vector3(1,
+                            heights[gridX + 1, gridZ], 0), new Vector3(0,
+                            heights[gridX, gridZ + 1], 1), new Vector2(xCoord, zCoord));
             }
             else
             {
-                answer = JMathUtils.BarryCentric(new Vector3(1, heights[gridX + 1,gridZ], 0), new Vector3(1,
-                            heights[gridX + 1,gridZ + 1], 1), new Vector3(0,
-                            heights[gridX,gridZ + 1], 1), new Vector2(xCoord, zCoord));
+                answer = JMathUtils.BarryCentric(new Vector3(1, heights[gridX + 1, gridZ], 0), new Vector3(1,
+                            heights[gridX + 1, gridZ + 1], 1), new Vector3(0,
+                            heights[gridX, gridZ + 1], 1), new Vector2(xCoord, zCoord));
             }
             return answer;
         }
