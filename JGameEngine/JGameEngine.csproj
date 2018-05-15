@@ -77,6 +77,8 @@
     <Compile Include="Terrains\JNoise.cs" />
     <Compile Include="Terrains\JPerlinTerrain.cs" />
     <Compile Include="Textures\JModelTexture.cs" />
+    <Compile Include="Textures\JTerrainTexturePack.cs" />
+    <Compile Include="Textures\JTerrainTexture.cs" />
     <Compile Include="Utils\JEntityGenerator.cs" />
     <Compile Include="Utils\JFileUtils.cs" />
     <Compile Include="Utils\JMathUtils.cs" />
@@ -101,7 +103,14 @@
     <Content Include="res\Smile.png" />
     <Content Include="res\stallTexture.png" />
     <Content Include="res\Terrain\Grass.png" />
+    <Content Include="res\Terrain\GrassLush.png" />
+    <Content Include="res\Terrain\GrassNatural.png" />
+    <Content Include="res\Terrain\MountainNatural.png" />
+    <Content Include="res\Terrain\MountainRocky.png" />
     <Content Include="res\Terrain\Sand.png" />
+    <Content Include="res\Terrain\Snow.png" />
+    <Content Include="res\Terrain\WaterDeep.png" />
+    <Content Include="res\Terrain\WaterShallow.png" />
     <Content Include="res\Tree\tree_texture_green_brown.png" />
     <Content Include="Shaders\2DFragmentShader.txt" />
     <Content Include="Shaders\2DVertexShader.txt" />

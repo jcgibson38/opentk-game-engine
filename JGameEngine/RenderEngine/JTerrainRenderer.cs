@@ -18,6 +18,7 @@ namespace JGameEngine.RenderEngine
             TerrainShader = shader;
             shader.start();
             shader.loadProjectionMatrix(projectionMatrix);
+            shader.LoadTextures();
             shader.stop();
         }
 
@@ -37,10 +38,30 @@ namespace JGameEngine.RenderEngine
             JRawModel rawModel = terrain.TerrainModel;
             GL.BindVertexArray(rawModel.vaoID);
             EnableAttribArrays();
-            JModelTexture texture = terrain.TerrainTexture;
-            TerrainShader.loadShineVariables(texture.ShineDamper, texture.Reflectivity);
+            BindTextures(terrain);
+            TerrainShader.loadShineVariables(1, 0);
+        }
+
+        private void BindTextures(JPerlinTerrain terrain)
+        {
+            JTerrainTexturePack texturePack = terrain.TexturePack;
+
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, terrain.TerrainTexture.TextureID);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureWaterDeep.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureWaterShallow.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture2);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureSand.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture3);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureGrassNatural.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture4);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureGrassLush.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture5);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureMountainNatural.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture6);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureMountainRocky.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture7);
+            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureSnow.TextureID);
         }
 
         private void UnbindTerrainModel()

@@ -13,8 +13,8 @@ namespace JGameEngine.Shaders
 {
     public class JTerrainShader : JShaderProgram
     {
-        private static readonly string VERTEX_FILE = "C:\\Users\\Jordan\\source\\repos\\JGameEngine - Copy\\JGameEngine\\shaders\\TerrainVertexShader.txt";
-        private static readonly string FRAGMENT_FILE = "C:\\Users\\Jordan\\source\\repos\\JGameEngine - Copy\\JGameEngine\\shaders\\TerrainFragmentShader.txt";
+        private static readonly string VERTEX_FILE = JFileUtils.GetPathToShader("TerrainVertexShader.txt");
+        private static readonly string FRAGMENT_FILE = JFileUtils.GetPathToShader("TerrainFragmentShader.txt");
 
         private int location_transformationMatrix;
         private int location_projectionMatrix;
@@ -24,6 +24,14 @@ namespace JGameEngine.Shaders
         private int location_reflectivity;
         private int location_shineDamper;
         private int location_skyColor;
+        private int location_textureWaterDeep;
+        private int location_textureWaterShallow;
+        private int location_textureSand;
+        private int location_textureGrassNatural;
+        private int location_textureGrassLush;
+        private int location_textureMountainNatural;
+        private int location_textureMountainRocky;
+        private int location_textureSnow;
 
         public JTerrainShader() : base(VERTEX_FILE,FRAGMENT_FILE)
         { }
@@ -48,6 +56,14 @@ namespace JGameEngine.Shaders
             location_reflectivity = base.getUnifromLocation("reflectivity");
             location_shineDamper = base.getUnifromLocation("shineDamper");
             location_skyColor = base.getUnifromLocation("skyColor");
+            location_textureWaterDeep = base.getUnifromLocation("textureSamplerWaterDeep");
+            location_textureWaterShallow = base.getUnifromLocation("textureSamplerWaterShallow");
+            location_textureSand = base.getUnifromLocation("textureSamplerSand");
+            location_textureGrassNatural = base.getUnifromLocation("textureSamplerGrassNatural");
+            location_textureGrassLush = base.getUnifromLocation("textureSamplerGrassLush");
+            location_textureMountainNatural = base.getUnifromLocation("textureSamplerMountainNatural");
+            location_textureMountainRocky = base.getUnifromLocation("textureSamplerMountainRocky");
+            location_textureSnow = base.getUnifromLocation("textureSamplerSnow");
         }
 
         public void loadSkyColor(float r, float g, float b)
@@ -81,6 +97,18 @@ namespace JGameEngine.Shaders
         {
             base.loadFloat(location_reflectivity, reflectivity);
             base.loadFloat(location_shineDamper, damper);
+        }
+
+        public void LoadTextures()
+        {
+            base.LoadInt(location_textureWaterDeep, 0);
+            base.LoadInt(location_textureWaterShallow, 1);
+            base.LoadInt(location_textureSand, 2);
+            base.LoadInt(location_textureGrassNatural, 3);
+            base.LoadInt(location_textureGrassLush, 4);
+            base.LoadInt(location_textureMountainNatural, 5);
+            base.LoadInt(location_textureMountainRocky, 6);
+            base.LoadInt(location_textureSnow, 7);
         }
     }
 }

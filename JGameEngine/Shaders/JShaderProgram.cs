@@ -157,6 +157,16 @@ namespace JGameEngine.Shaders
             GL.UniformMatrix4(location, false, ref matrix);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="value"></param>
+        protected void LoadInt(int location, int value)
+        {
+            GL.Uniform1(location, value);
+        }
+
         #endregion UniformVariables
     }
 }

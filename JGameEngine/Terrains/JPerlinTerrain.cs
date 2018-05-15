@@ -20,15 +20,15 @@ namespace JGameEngine.Terrains
         public float X { get; set; }
         public float Z { get; set; }
         public JRawModel TerrainModel { get; set; }
-        public JModelTexture TerrainTexture { get; set; }
+        public JTerrainTexturePack TexturePack { get; set; }
 
         private float[,] heights;
 
-        public JPerlinTerrain(int gridX, int gridZ, JLoader loader, JModelTexture texture)
+        public JPerlinTerrain(int gridX, int gridZ, JLoader loader, JTerrainTexturePack texturePack)
         {
             X = gridX * SIZE;
             Z = gridZ * SIZE;
-            TerrainTexture = texture;
+            TexturePack = texturePack;
             TerrainModel = generateTerrain(loader);
         }
 

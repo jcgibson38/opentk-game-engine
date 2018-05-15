@@ -65,7 +65,18 @@ namespace JGameEngine.RenderEngine
             Light = new JLight(new Vector3(0,0,0),new Vector3(1,1,1));
             MasterRenderer = new JMasterRenderer();
 
-            terrain = new JPerlinTerrain(0, -1, Loader, new JModelTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Grass.png"))));
+            JTerrainTexture textureWaterDeep = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\WaterDeep.png")));
+            JTerrainTexture textureWaterShallow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\WaterShallow.png")));
+            JTerrainTexture textureSand = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Sand.png")));
+            JTerrainTexture textureGrassNatural = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\GrassNatural.png")));
+            JTerrainTexture textureGrassLush = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\GrassLush.png")));
+            JTerrainTexture textureMountainNatural = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\MountainNatural.png")));
+            JTerrainTexture textureMountainRocky = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\MountainRocky.png")));
+            JTerrainTexture textureSnow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Snow.png")));
+
+            JTerrainTexturePack texturePack = new JTerrainTexturePack(textureWaterDeep, textureWaterShallow, textureSand, textureGrassNatural, textureGrassLush, textureMountainNatural, textureMountainRocky, textureSnow);
+
+            terrain = new JPerlinTerrain(0, -1, Loader, texturePack);
 
             Entity = new JBoundedEntity(TexturedModel, new Vector3(50, 0, -50), new Vector3(0,0,1), 0.1f, Loader);
             Entity2 = new JBoundedEntity(TexturedModel, new Vector3(100, 0, -50), new Vector3(0, 0, 1), 0.1f, Loader);

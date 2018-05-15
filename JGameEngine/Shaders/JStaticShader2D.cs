@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JGameEngine.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,8 @@ namespace JGameEngine.Shaders
     /// </summary>
     class JStaticShader2D : JShaderProgram
     {
-        private static readonly string VERTEX_FILE = "C:\\Users\\Jordan\\source\\repos\\JGameEngine_v1\\JGameEngine\\Shaders\\2DVertexShader.txt";
-        private static readonly string FRAGMENT_FILE = "C:\\Users\\Jordan\\source\\repos\\JGameEngine_v1\\JGameEngine\\Shaders\\2DFragmentShader.txt";
+        private static readonly string VERTEX_FILE = JFileUtils.GetPathToShader("2DVertexShader.txt");
+        private static readonly string FRAGMENT_FILE = JFileUtils.GetPathToShader("2DFragmentShader.txt");
 
         public JStaticShader2D() : base(VERTEX_FILE, FRAGMENT_FILE)
         {

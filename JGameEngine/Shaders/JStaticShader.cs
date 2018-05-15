@@ -7,8 +7,8 @@ namespace JGameEngine.Shaders
 {
     class JStaticShader : JShaderProgram
     {
-        private static readonly string VERTEX_FILE = "C:\\Users\\Jordan\\source\\repos\\JGameEngine - Copy\\JGameEngine\\shaders\\vertexShader.txt";
-        private static readonly string FRAGMENT_FILE = "C:\\Users\\Jordan\\source\\repos\\JGameEngine - Copy\\JGameEngine\\shaders\\fragmentShader.txt";
+        private static readonly string VERTEX_FILE = JFileUtils.GetPathToShader("vertexShader.txt");
+        private static readonly string FRAGMENT_FILE = JFileUtils.GetPathToShader("fragmentShader.txt");
 
         private int location_transformationMatrix;
         private int location_projectionMatrix;
