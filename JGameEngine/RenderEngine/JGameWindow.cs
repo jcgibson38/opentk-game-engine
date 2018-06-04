@@ -50,6 +50,12 @@ namespace JGameEngine.RenderEngine
             PlayerTexturePath = JFileUtils.GetPathToFile("Cowboy\\CowboyTexture.png");
             PlayerModelPath = JFileUtils.GetPathToFile("Cowboy\\Cowboy.obj");
 
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            DateTime buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
+            string displayVersion = $"{version} ({buildDate})";
+
+            Console.WriteLine("JGameEngine v." + displayVersion);
+
             Console.WriteLine("OpenGL version: " + GL.GetString(StringName.Version));
 
             Loader = new JLoader();
