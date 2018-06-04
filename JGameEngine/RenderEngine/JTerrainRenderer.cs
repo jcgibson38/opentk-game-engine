@@ -13,12 +13,12 @@ namespace JGameEngine.RenderEngine
     {
         private JTerrainShader TerrainShader { get; set; }
 
-        public JTerrainRenderer(JTerrainShader shader,Matrix4 projectionMatrix)
+        public JTerrainRenderer(JTerrainShader shader,Matrix4 projectionMatrix,JTerrainTexturePack texturePack)
         {
             TerrainShader = shader;
             shader.start();
             shader.loadProjectionMatrix(projectionMatrix);
-            shader.LoadTextures();
+            shader.LoadTextures(texturePack.TerrainHeights, texturePack.Count);
             shader.stop();
         }
 
@@ -46,22 +46,14 @@ namespace JGameEngine.RenderEngine
         {
             JTerrainTexturePack texturePack = terrain.TexturePack;
 
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureWaterDeep.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture1);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureWaterShallow.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture2);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureSand.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture3);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureGrassNatural.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture4);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureGrassLush.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture5);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureMountainNatural.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture6);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureMountainRocky.TextureID);
-            GL.ActiveTexture(TextureUnit.Texture7);
-            GL.BindTexture(TextureTarget.Texture2D, texturePack.TextureSnow.TextureID);
+            TextureUnit texture = TextureUnit.Texture0;
+
+            for (int i = 0; i < texturePack.TerrainTextures.Count; i++)
+            {
+                GL.ActiveTexture(texture);
+                GL.BindTexture(TextureTarget.Texture2D, texturePack.TerrainTextures[i].TextureID);
+                texture++;
+            }
         }
 
         private void UnbindTerrainModel()

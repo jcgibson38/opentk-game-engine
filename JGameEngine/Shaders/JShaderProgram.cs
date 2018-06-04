@@ -126,6 +126,16 @@ namespace JGameEngine.Shaders
         /// 
         /// </summary>
         /// <param name="location"></param>
+        /// <param name="values"></param>
+        protected void LoadFloatArray(int location, float[] values)
+        {
+            GL.Uniform1(location, values.Length, values);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location"></param>
         /// <param name="vector"></param>
         protected void loadVector(int location,Vector3 vector)
         {
@@ -165,6 +175,16 @@ namespace JGameEngine.Shaders
         protected void LoadInt(int location, int value)
         {
             GL.Uniform1(location, value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="values"></param>
+        protected void LoadIntArray(int location, int[] values)
+        {
+            GL.Uniform1(location, values.Length, values);
         }
 
         #endregion UniformVariables

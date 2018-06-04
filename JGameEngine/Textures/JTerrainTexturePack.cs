@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JGameEngine.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,25 +9,30 @@ namespace JGameEngine.Textures
 {
     public class JTerrainTexturePack
     {
-        public JTerrainTexture TextureWaterDeep { get; set; }
-        public JTerrainTexture TextureWaterShallow { get; set; }
-        public JTerrainTexture TextureSand { get; set; }
-        public JTerrainTexture TextureGrassNatural { get; set; }
-        public JTerrainTexture TextureGrassLush { get; set; }
-        public JTerrainTexture TextureMountainNatural { get; set; }
-        public JTerrainTexture TextureMountainRocky { get; set; }
-        public JTerrainTexture TextureSnow { get; set; }
+        public List<JTerrainTexture> TerrainTextures { get; set; }
+        public float[] TerrainHeights { get; set; }
+        public int Count { get; set; }
 
-        public JTerrainTexturePack(JTerrainTexture textureWaterDeep, JTerrainTexture textureWaterShallow, JTerrainTexture textureSand, JTerrainTexture textureGrassNatural, JTerrainTexture textureGrassLush, JTerrainTexture textureMountainNatural, JTerrainTexture textureMountainRocky, JTerrainTexture textureSnow)
+        /// <summary>
+        /// 
+        /// </summary>
+        public JTerrainTexturePack()
         {
-            TextureWaterDeep = textureWaterDeep;
-            TextureWaterShallow = textureWaterShallow;
-            TextureSand = textureSand;
-            TextureGrassNatural = textureGrassNatural;
-            TextureGrassLush = textureGrassLush;
-            TextureMountainNatural = textureMountainNatural;
-            TextureMountainRocky = textureMountainRocky;
-            TextureSnow = textureSnow;
+            TerrainTextures = new List<JTerrainTexture>();
+            TerrainHeights = new float[8];
+            Count = 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="terrainTexture">The texture to apply to the terrain.</param>
+        /// <param name="height">A value in the range [0,1]. terrainTexture will be applied to the Terrain from the height of the preceeding terrainTexture until height.</param>
+        public void AddTerrainTexture(JTerrainTexture terrainTexture,float height)
+        {
+            TerrainTextures.Add(terrainTexture);
+            TerrainHeights[Count] = height * JConfig.MAX_TERRAIN_HEIGHT;
+            Count++;
         }
     }
 }

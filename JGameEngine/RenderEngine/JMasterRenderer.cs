@@ -9,6 +9,7 @@ using JGameEngine.Terrains;
 using JGameEngine.Models;
 using JGameEngine.Entities.Camera;
 using JGameEngine.Config;
+using JGameEngine.Textures;
 
 namespace JGameEngine.RenderEngine
 {
@@ -29,7 +30,7 @@ namespace JGameEngine.RenderEngine
         private JTerrainRenderer TerrainRenderer { get; set; }
         private JTerrainShader TerrainShader { get; set; }
 
-        public JMasterRenderer()
+        public JMasterRenderer(JTerrainTexturePack texturePack)
         {
             terrains = new List<JPerlinTerrain>();
             skyRed = 0.5f;
@@ -42,7 +43,7 @@ namespace JGameEngine.RenderEngine
             this.Shader = new JStaticShader();
             this.TerrainShader = new JTerrainShader();
             this.Renderer = new JEntityRenderer(Shader,projectionMatrix);
-            this.TerrainRenderer = new JTerrainRenderer(TerrainShader,projectionMatrix);
+            this.TerrainRenderer = new JTerrainRenderer(TerrainShader,projectionMatrix,texturePack);
             this.Entities = new Dictionary<JTexturedModel, List<JEntity>>();
         }
 

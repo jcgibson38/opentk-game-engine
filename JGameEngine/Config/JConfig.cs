@@ -32,5 +32,10 @@ namespace JGameEngine.Config
         /// 
         /// </summary>
         public static readonly float FAR_PLANE = 1000;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly float MAX_TERRAIN_HEIGHT = 50.0f;
     }
 }

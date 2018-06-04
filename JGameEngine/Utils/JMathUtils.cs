@@ -134,5 +134,19 @@ namespace JGameEngine.Utils
         {
             return 0.6343434f * x - 1.742424f * x * x + 2.474747f * x * x * x;
         }
+
+        public static float HeightCurve2(float x)
+        {
+            float retVal =  0.9f * x - 1.2f * x * x + -2.1f * x * x * x + 4.1f * x * x * x * x;
+            if(retVal < 0)
+            {
+                retVal = 0;
+            }else if(retVal > 1.0f)
+            {
+                retVal = 1.0f;
+            }
+
+            return retVal;
+        }
     }
 }
