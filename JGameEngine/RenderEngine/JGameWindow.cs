@@ -4,6 +4,7 @@ using JGameEngine.Models;
 using JGameEngine.Terrains;
 using JGameEngine.Textures;
 using JGameEngine.Utils;
+using JGameEngine.Water;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -40,6 +41,9 @@ namespace JGameEngine.RenderEngine
 
         private JMousePicker picker;
 
+        private JWaterRenderer waterRenderer;
+        private List<JWaterTile> waterTiles;
+
         JPerlinTerrain terrain;
 
         /// <summary>
@@ -47,8 +51,8 @@ namespace JGameEngine.RenderEngine
         /// </summary>
         public JGameWindow() : base(WIDTH, HEIGHT, new OpenTK.Graphics.GraphicsMode(32,24,0,8), "JModelViewer", GameWindowFlags.Default, DisplayDevice.Default, 3, 0, GraphicsContextFlags.ForwardCompatible)
         {
-            PlayerTexturePath = JFileUtils.GetPathToFile("Cowboy\\CowboyTexture.png");
-            PlayerModelPath = JFileUtils.GetPathToFile("Cowboy\\Cowboy.obj");
+            PlayerTexturePath = JFileUtils.GetPathToResFile("Cowboy\\CowboyTexture.png");
+            PlayerModelPath = JFileUtils.GetPathToResFile("Cowboy\\Cowboy.obj");
 
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             DateTime buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
@@ -62,7 +66,7 @@ namespace JGameEngine.RenderEngine
             PlayerModelData = JObjFileLoader.LoadObj(PlayerModelPath);
 
             Console.WriteLine("Using .obj file: " + PlayerModelPath);
-            PlayerModel = Loader.loadToVAO(PlayerModelData.Vertices, PlayerModelData.TextureCoords, PlayerModelData.Normals, PlayerModelData.Indices);
+            PlayerModel = Loader.LoadToVAO(PlayerModelData.Vertices, PlayerModelData.TextureCoords, PlayerModelData.Normals, PlayerModelData.Indices);
 
             Console.WriteLine("Using .png texture file: " + PlayerTexturePath + "...");
             JModelTexture texture = new JModelTexture(Loader.loadTexture(PlayerTexturePath));
@@ -71,14 +75,14 @@ namespace JGameEngine.RenderEngine
             Light = new JLight(new Vector3(0,0,0),new Vector3(1,1,1));
             
 
-            JTerrainTexture textureWaterDeep = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\WaterDeep.png")));
-            JTerrainTexture textureWaterShallow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\WaterShallow.png")));
-            JTerrainTexture textureSand = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Sand.png")));
-            JTerrainTexture textureGrassNatural = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\GrassNatural.png")));
-            JTerrainTexture textureGrassLush = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\GrassLush.png")));
-            JTerrainTexture textureMountainNatural = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\MountainNatural.png")));
-            JTerrainTexture textureMountainRocky = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\MountainRocky.png")));
-            JTerrainTexture textureSnow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToFile("Terrain\\Snow.png")));
+            JTerrainTexture textureWaterDeep = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\WaterDeep.png")));
+            JTerrainTexture textureWaterShallow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\WaterShallow.png")));
+            JTerrainTexture textureSand = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\Sand.png")));
+            JTerrainTexture textureGrassNatural = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\GrassNatural.png")));
+            JTerrainTexture textureGrassLush = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\GrassLush.png")));
+            JTerrainTexture textureMountainNatural = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\MountainNatural.png")));
+            JTerrainTexture textureMountainRocky = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\MountainRocky.png")));
+            JTerrainTexture textureSnow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\Snow.png")));
 
             JTerrainTexturePack texturePack = new JTerrainTexturePack();
             texturePack.AddTerrainTexture(textureWaterDeep, 0.1f);
@@ -91,6 +95,11 @@ namespace JGameEngine.RenderEngine
             texturePack.AddTerrainTexture(textureSnow, 0.8f);
 
             MasterRenderer = new JMasterRenderer(texturePack);
+
+            JWaterShader waterShader = new JWaterShader();
+            waterRenderer = new JWaterRenderer(Loader, waterShader, MasterRenderer.projectionMatrix);
+            waterTiles = new List<JWaterTile>();
+            waterTiles.Add(new JWaterTile(400, -400, 8));
 
             terrain = new JPerlinTerrain(0, -1, Loader, texturePack);
 
@@ -165,17 +174,8 @@ namespace JGameEngine.RenderEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            MasterRenderer.processTerrain(terrain);
-            foreach (JBoundedEntity entity in EntityList)
-            {
-                MasterRenderer.ProcessEntity(entity);
-                MasterRenderer.ProcessEntity(entity.BoundingSphere.SphereEntity);
-            }
-            foreach(JEntity entity in StaticEntities)
-            {
-                MasterRenderer.ProcessEntity(entity);
-            }
-            MasterRenderer.Render(Light, Camera);
+            MasterRenderer.RenderScene(EntityList, StaticEntities, terrain, Light, Camera);
+            waterRenderer.Render(waterTiles, Camera);
             this.SwapBuffers();
         }
 

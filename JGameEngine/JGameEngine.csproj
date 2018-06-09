@@ -85,6 +85,9 @@
     <Compile Include="Utils\JMousePicker.cs" />
     <Compile Include="Utils\JPerlinNoise.cs" />
     <Compile Include="Utils\JVector3.cs" />
+    <Compile Include="Water\JWaterRenderer.cs" />
+    <Compile Include="Water\JWaterShader.cs" />
+    <Compile Include="Water\JWaterTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -118,6 +121,8 @@
     <Content Include="Shaders\TerrainFragmentShader.txt" />
     <Content Include="Shaders\TerrainVertexShader.txt" />
     <Content Include="Shaders\vertexShader.txt" />
+    <Content Include="Water\WaterFragmentShader.txt" />
+    <Content Include="Water\WaterVertexShader.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

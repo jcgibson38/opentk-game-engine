@@ -38,10 +38,10 @@ namespace JGameEngine.Utils
 
             List<JEntity> TreeEntities = new List<JEntity>();
 
-            string TreeTexturePath = JFileUtils.GetPathToFile("Tree\\tree_texture_green_brown.png");
-            string TreeModelPath = JFileUtils.GetPathToFile("Tree\\tree.obj");
+            string TreeTexturePath = JFileUtils.GetPathToResFile("Tree\\tree_texture_green_brown.png");
+            string TreeModelPath = JFileUtils.GetPathToResFile("Tree\\tree.obj");
             JModelData TreeModelData = JObjFileLoader.LoadObj(TreeModelPath);
-            JRawModel TreeModel = Loader.loadToVAO(TreeModelData.Vertices, TreeModelData.TextureCoords, TreeModelData.Normals, TreeModelData.Indices);
+            JRawModel TreeModel = Loader.LoadToVAO(TreeModelData.Vertices, TreeModelData.TextureCoords, TreeModelData.Normals, TreeModelData.Indices);
             JModelTexture TreeTexture = new JModelTexture(Loader.loadTexture(TreeTexturePath));
             JTexturedModel TreeTexturedModel = new JTexturedModel(TreeModel, TreeTexture);
             Random r = new Random();

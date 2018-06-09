@@ -18,7 +18,7 @@ namespace JGameEngine.RenderEngine
 
         public JRawModel LoadToVAO(float[] positions,float[] textureCoords, uint[] indices)
         {
-            int vaoID = createVAO();
+            int vaoID = CreateVAO();
             bindIndicesBuffer(indices);
             storeDataInVAO(0, 3, positions);
             storeDataInVAO(1, 2, textureCoords);
@@ -33,9 +33,9 @@ namespace JGameEngine.RenderEngine
         /// <param name="positions">1D array of vertex positions. Groups of 3 represent position in x,y,z space.</param>
         /// <param name="indices">1D array of indices into positions. Each index is a reference to a vertex position in positions.</param>
         /// <returns></returns>
-        public JRawModel loadToVAO(float[] positions,float[] textureCoords, float[] normals,uint[] indices)
+        public JRawModel LoadToVAO(float[] positions,float[] textureCoords, float[] normals,uint[] indices)
         {
-            int vaoID = createVAO();
+            int vaoID = CreateVAO();
             bindIndicesBuffer(indices);
             storeDataInVAO(0, 3, positions);
             storeDataInVAO(1, 2, textureCoords);
@@ -45,11 +45,19 @@ namespace JGameEngine.RenderEngine
             return new JRawModel(vaoID, indices.Length);
         }
 
+        public JRawModel LoadToVAO(float[] positions, int dimensions)
+        {
+            int vaoID = CreateVAO();
+            this.storeDataInVAO(0, dimensions, positions);
+            unbindVAO();
+            return new JRawModel(vaoID, positions.Length / dimensions);
+        }
+
         /// <summary>
         /// Create a VAO and get it's ID.
         /// </summary>
         /// <returns></returns>
-        private int createVAO()
+        private int CreateVAO()
         {
             int vaoID;
             GL.GenVertexArrays(1, out vaoID);
@@ -63,7 +71,7 @@ namespace JGameEngine.RenderEngine
         /// Create a VBO and get it's ID.
         /// </summary>
         /// <returns></returns>
-        private int createVBO()
+        private int CreateVBO()
         {
             int vboID;
             GL.GenBuffers(1, out vboID);
@@ -79,7 +87,7 @@ namespace JGameEngine.RenderEngine
         /// <param name="data"></param>
         private void storeDataInVAO(int vaoIndex,int coordinateSize,float[] data)
         {
-            int vboID = createVBO();
+            int vboID = CreateVBO();
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboID);
             GL.EnableVertexAttribArray(vaoIndex);
             GL.BufferData<float>(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
@@ -101,7 +109,7 @@ namespace JGameEngine.RenderEngine
         /// <param name="indices"></param>
         private void bindIndicesBuffer(uint[] indices)
         {
-            int vboID = createVBO();
+            int vboID = CreateVBO();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, vboID);
             GL.BufferData<uint>(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
         }

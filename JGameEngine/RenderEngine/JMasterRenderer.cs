@@ -104,5 +104,19 @@ namespace JGameEngine.RenderEngine
             GL.ClearColor(skyRed,skyGreen,skyBlue,1);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
+
+        public void RenderScene(List<JBoundedEntity> entities, List<JEntity> staticEntities, JPerlinTerrain terrain, JLight light, JCamera camera)
+        {
+            processTerrain(terrain);
+            foreach(JBoundedEntity entity in entities){
+                ProcessEntity(entity);
+                ProcessEntity(entity.BoundingSphere.SphereEntity);
+            }
+            foreach (JEntity entity in staticEntities)
+            {
+                ProcessEntity(entity);
+            }
+            Render(light, camera);
+        }
     }
 }

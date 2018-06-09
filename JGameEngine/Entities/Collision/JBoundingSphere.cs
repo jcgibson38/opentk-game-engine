@@ -59,9 +59,9 @@ namespace JGameEngine.Entities.Collision
         /// </summary>
         public JBoundingSphere()
         {
-            SphereTexturePathSelected = JFileUtils.GetPathToFile("BoundingSphereTextureSelected.png");
-            SphereTexturePathUnselected = JFileUtils.GetPathToFile("BoundingSphereTextureUnselected.png");
-            SphereModelPath = JFileUtils.GetPathToFile("CollisionSphere.obj");
+            SphereTexturePathSelected = JFileUtils.GetPathToResFile("BoundingSphereTextureSelected.png");
+            SphereTexturePathUnselected = JFileUtils.GetPathToResFile("BoundingSphereTextureUnselected.png");
+            SphereModelPath = JFileUtils.GetPathToResFile("CollisionSphere.obj");
 
             Radius = 1f;
         }
@@ -73,7 +73,7 @@ namespace JGameEngine.Entities.Collision
         public void LoadSphereModel(JLoader loader)
         {
             SphereModelData = JObjFileLoader.LoadObj(SphereModelPath);
-            SphereModel = loader.loadToVAO(SphereModelData.Vertices, SphereModelData.TextureCoords, SphereModelData.Normals, SphereModelData.Indices);
+            SphereModel = loader.LoadToVAO(SphereModelData.Vertices, SphereModelData.TextureCoords, SphereModelData.Normals, SphereModelData.Indices);
             JModelTexture texture = new JModelTexture(loader.loadTexture(SphereTexturePathUnselected));
             SphereTexturedModel = new JTexturedModel(SphereModel, texture);
             SphereEntity = new JEntity(SphereTexturedModel, new Vector3(50, 0, -50), new Vector3(0, 0, 1), 0.5f);

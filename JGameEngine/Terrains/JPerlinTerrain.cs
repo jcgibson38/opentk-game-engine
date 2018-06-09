@@ -82,7 +82,7 @@ namespace JGameEngine.Terrains
 
             Console.WriteLine("Terrain generation complete...");
             
-            return loader.loadToVAO(vertices, textureCoords, normals, indices);
+            return loader.LoadToVAO(vertices, textureCoords, normals, indices);
         }
 
         private Vector3 CalculateNormal(int x, int z,float[,] noiseMap)
