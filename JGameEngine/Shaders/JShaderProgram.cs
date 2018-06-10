@@ -137,9 +137,19 @@ namespace JGameEngine.Shaders
         /// </summary>
         /// <param name="location"></param>
         /// <param name="vector"></param>
-        protected void loadVector(int location,Vector3 vector)
+        protected void LoadVector(int location, Vector3 vector)
         {
             GL.Uniform3(location, ref vector);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="vector"></param>
+        protected void LoadVector(int location, Vector4 vector)
+        {
+            GL.Uniform4(location, ref vector);
         }
 
         /// <summary>

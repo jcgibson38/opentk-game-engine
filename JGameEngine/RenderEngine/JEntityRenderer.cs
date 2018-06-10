@@ -17,7 +17,7 @@ namespace JGameEngine.RenderEngine
         {
             this.Shader = shader;
             shader.start();
-            shader.loadProjectionMatrix(projectionMatrix);
+            shader.LoadProjectionMatrix(projectionMatrix);
             shader.stop();
         }
 
@@ -42,7 +42,7 @@ namespace JGameEngine.RenderEngine
             GL.BindVertexArray(rawModel.vaoID);
             enableAttribArrays();
             JModelTexture texture = texturedModel.Texture;
-            Shader.loadShineVariables(texture.ShineDamper, texture.Reflectivity);
+            Shader.LoadShineVariables(texture.ShineDamper, texture.Reflectivity);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, texturedModel.Texture.TextureID);
         }
@@ -58,7 +58,7 @@ namespace JGameEngine.RenderEngine
             //Matrix4 transformationMatrix = JMathUtils.createTransformationMatrix(entity.Position, entity.RotX, entity.RotY, entity.RotZ, entity.Scale);
             //JMathUtils.testTransformationMatrix(entity.Position, entity.Orientation, entity.Scale);
             Matrix4 transformationMatrix = JMathUtils.testTransformationMatrix(entity.Position, entity.Orientation, entity.Scale);
-            Shader.loadTransformationMatrix(transformationMatrix);
+            Shader.LoadTransformationMatrix(transformationMatrix);
         }
 
         #region VAOControl

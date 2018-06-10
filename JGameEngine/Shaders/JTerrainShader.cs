@@ -27,6 +27,7 @@ namespace JGameEngine.Shaders
         private int location_textureSamplerLand;
         private int location_terrainTextureHeights;
         private int location_numTerrainHeights;
+        private int location_clippingPlane;
 
         public JTerrainShader() : base(VERTEX_FILE,FRAGMENT_FILE)
         {
@@ -56,25 +57,31 @@ namespace JGameEngine.Shaders
             location_textureSamplerLand = base.getUnifromLocation("textureSamplerLand");
             location_terrainTextureHeights = base.getUnifromLocation("terrainTextureHeights");
             location_numTerrainHeights = base.getUnifromLocation("numTerrainHeights");
+            location_clippingPlane = base.getUnifromLocation("clippingPlane");
         }
 
-        public void loadSkyColor(float r, float g, float b)
+        public void LoadClippingPlane(Vector4 clippingPlane)
         {
-            base.loadVector(location_skyColor, new Vector3(r, g, b));
+            base.LoadVector(location_clippingPlane, clippingPlane);
         }
 
-        public void loadTransformationMatrix(Matrix4 matrix)
+        public void LoadSkyColor(float r, float g, float b)
+        {
+            base.LoadVector(location_skyColor, new Vector3(r, g, b));
+        }
+
+        public void LoadTransformationMatrix(Matrix4 matrix)
         {
             base.loadMatrix(location_transformationMatrix, matrix);
         }
 
         public void LoadLight(JLight light)
         {
-            base.loadVector(location_lightColor, light.Color);
-            base.loadVector(location_lightPosition, light.Position);
+            base.LoadVector(location_lightColor, light.Color);
+            base.LoadVector(location_lightPosition, light.Position);
         }
 
-        public void loadProjectionMatrix(Matrix4 matrix)
+        public void LoadProjectionMatrix(Matrix4 matrix)
         {
             base.loadMatrix(location_projectionMatrix, matrix);
         }
@@ -85,7 +92,7 @@ namespace JGameEngine.Shaders
             base.loadMatrix(location_viewMatrix, viewMatrix);
         }
 
-        public void loadShineVariables(float damper, float reflectivity)
+        public void LoadShineVariables(float damper, float reflectivity)
         {
             base.loadFloat(location_reflectivity, reflectivity);
             base.loadFloat(location_shineDamper, damper);

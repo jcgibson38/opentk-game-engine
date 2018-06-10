@@ -49,7 +49,7 @@ namespace JGameEngine.Terrains
                 for (int j = 0; j < VERTEX_COUNT; j++)
                 {
                     vertices[vertexPointer * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-                    float height = JMathUtils.HeightCurve2(test[j, i]) * MAX_HEIGHT;
+                    float height = JMathUtils.HeightCurve(test[j, i]) * MAX_HEIGHT;
                     vertices[vertexPointer * 3 + 1] = height;
                     heights[j, i] = height;
                     vertices[vertexPointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
@@ -104,10 +104,10 @@ namespace JGameEngine.Terrains
                 x = (VERTEX_COUNT - 2);
             }
 
-            float heightL = JMathUtils.HeightCurve2(noiseMap[x - 1, z]) * MAX_HEIGHT;
-            float heightR = JMathUtils.HeightCurve2(noiseMap[x + 1, z]) * MAX_HEIGHT;
-            float heightD = JMathUtils.HeightCurve2(noiseMap[x, z - 1]) * MAX_HEIGHT;
-            float heightU = JMathUtils.HeightCurve2(noiseMap[x, z + 1]) * MAX_HEIGHT;
+            float heightL = JMathUtils.HeightCurve(noiseMap[x - 1, z]) * MAX_HEIGHT;
+            float heightR = JMathUtils.HeightCurve(noiseMap[x + 1, z]) * MAX_HEIGHT;
+            float heightD = JMathUtils.HeightCurve(noiseMap[x, z - 1]) * MAX_HEIGHT;
+            float heightU = JMathUtils.HeightCurve(noiseMap[x, z + 1]) * MAX_HEIGHT;
 
             Vector3 normal = new Vector3(heightL - heightR, 2f, heightD - heightU);
             normal.Normalize();

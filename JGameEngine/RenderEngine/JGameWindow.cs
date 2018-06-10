@@ -43,6 +43,9 @@ namespace JGameEngine.RenderEngine
 
         private JWaterRenderer waterRenderer;
         private List<JWaterTile> waterTiles;
+        private JWaterFrameBuffer WaterBuffer;
+        private JWaterShader WaterShader;
+        private JWaterTile WaterTile;
 
         JPerlinTerrain terrain;
 
@@ -74,7 +77,6 @@ namespace JGameEngine.RenderEngine
             TexturedModel = new JTexturedModel(PlayerModel, texture);
             Light = new JLight(new Vector3(0,0,0),new Vector3(1,1,1));
             
-
             JTerrainTexture textureWaterDeep = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\WaterDeep.png")));
             JTerrainTexture textureWaterShallow = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\WaterShallow.png")));
             JTerrainTexture textureSand = new JTerrainTexture(Loader.loadTexture(JFileUtils.GetPathToResFile("Terrain\\Sand.png")));
@@ -96,10 +98,13 @@ namespace JGameEngine.RenderEngine
 
             MasterRenderer = new JMasterRenderer(texturePack);
 
-            JWaterShader waterShader = new JWaterShader();
-            waterRenderer = new JWaterRenderer(Loader, waterShader, MasterRenderer.projectionMatrix);
+            WaterShader = new JWaterShader();
+            waterRenderer = new JWaterRenderer(Loader, WaterShader, MasterRenderer.projectionMatrix);
             waterTiles = new List<JWaterTile>();
-            waterTiles.Add(new JWaterTile(400, -400, 8));
+            WaterTile = new JWaterTile(400, -400, 8);
+            waterTiles.Add(WaterTile);
+
+            WaterBuffer = new JWaterFrameBuffer(this);
 
             terrain = new JPerlinTerrain(0, -1, Loader, texturePack);
 
@@ -174,7 +179,23 @@ namespace JGameEngine.RenderEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            MasterRenderer.RenderScene(EntityList, StaticEntities, terrain, Light, Camera);
+            GL.Enable(EnableCap.ClipDistance0);
+
+            WaterBuffer.BindReflectionFrameBuffer();
+            float distance = 2 * (Camera.Position.Y - WaterTile.Height);
+            Camera.Position = new Vector3(Camera.Position.X, Camera.Position.Y - distance, Camera.Position.Z);
+            Camera.Pitch = -Camera.Pitch;
+            MasterRenderer.RenderScene(EntityList, StaticEntities, terrain, Light, Camera, new Vector4(0, 1, 0, -WaterTile.Height));
+            WaterBuffer.UnbindFrameBuffer(this);
+            Camera.Position = new Vector3(Camera.Position.X, Camera.Position.Y + distance, Camera.Position.Z);
+            Camera.Pitch = -Camera.Pitch;
+
+            WaterBuffer.BindRefractionFrameBuffer();
+            MasterRenderer.RenderScene(EntityList, StaticEntities, terrain, Light, Camera, new Vector4(0, -1, 0, WaterTile.Height));
+            WaterBuffer.UnbindFrameBuffer(this);
+
+            GL.Disable(EnableCap.ClipDistance0);
+            MasterRenderer.RenderScene(EntityList, StaticEntities, terrain, Light, Camera, new Vector4(0, -1, 0, 20));
             waterRenderer.Render(waterTiles, Camera);
             this.SwapBuffers();
         }
@@ -182,8 +203,10 @@ namespace JGameEngine.RenderEngine
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+            WaterShader.cleanUp();
             MasterRenderer.CleanUp();
             Loader.cleanUp();
+            WaterBuffer.CleanUp();
         }
 
         private static ulong GetCurrentTime()

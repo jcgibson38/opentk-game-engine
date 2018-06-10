@@ -65,19 +65,21 @@ namespace JGameEngine.RenderEngine
             }
         }
 
-        public void Render(JLight light,JCamera camera)
+        public void Render(JLight light,JCamera camera, Vector4 clippingPlane)
         {
             prepare();
 
             Shader.start();
-            Shader.loadSkyColor(skyRed,skyGreen,skyBlue);
-            Shader.loadLight(light);
-            Shader.loadViewMatrix(camera);
+            Shader.LoadClippingPlane(clippingPlane);
+            Shader.LoadSkyColor(skyRed,skyGreen,skyBlue);
+            Shader.LoadLight(light);
+            Shader.LoadViewMatrix(camera);
             Renderer.render(Entities);
             Shader.stop();
 
             TerrainShader.start();
-            TerrainShader.loadSkyColor(skyRed, skyGreen, skyBlue);
+            TerrainShader.LoadClippingPlane(clippingPlane);
+            TerrainShader.LoadSkyColor(skyRed, skyGreen, skyBlue);
             TerrainShader.LoadLight(light);
             TerrainShader.LoadViewMatrix(camera);
             TerrainRenderer.Render(terrains);
@@ -105,7 +107,7 @@ namespace JGameEngine.RenderEngine
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
-        public void RenderScene(List<JBoundedEntity> entities, List<JEntity> staticEntities, JPerlinTerrain terrain, JLight light, JCamera camera)
+        public void RenderScene(List<JBoundedEntity> entities, List<JEntity> staticEntities, JPerlinTerrain terrain, JLight light, JCamera camera, Vector4 clippingPlane)
         {
             processTerrain(terrain);
             foreach(JBoundedEntity entity in entities){
@@ -116,7 +118,7 @@ namespace JGameEngine.RenderEngine
             {
                 ProcessEntity(entity);
             }
-            Render(light, camera);
+            Render(light, camera, clippingPlane);
         }
     }
 }

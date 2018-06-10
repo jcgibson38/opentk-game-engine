@@ -88,6 +88,7 @@
     <Compile Include="Water\JWaterRenderer.cs" />
     <Compile Include="Water\JWaterShader.cs" />
     <Compile Include="Water\JWaterTile.cs" />
+    <Compile Include="Water\JWaterFrameBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

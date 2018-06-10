@@ -17,7 +17,7 @@ namespace JGameEngine.RenderEngine
         {
             TerrainShader = shader;
             shader.start();
-            shader.loadProjectionMatrix(projectionMatrix);
+            shader.LoadProjectionMatrix(projectionMatrix);
             shader.LoadTextures(texturePack.TerrainHeights, texturePack.Count);
             shader.stop();
         }
@@ -39,7 +39,7 @@ namespace JGameEngine.RenderEngine
             GL.BindVertexArray(rawModel.vaoID);
             EnableAttribArrays();
             BindTextures(terrain);
-            TerrainShader.loadShineVariables(1, 0);
+            TerrainShader.LoadShineVariables(1, 0);
         }
 
         private void BindTextures(JPerlinTerrain terrain)
@@ -65,7 +65,7 @@ namespace JGameEngine.RenderEngine
         private void LoadModelMatrix(JPerlinTerrain terrain)
         {
             Matrix4 transformationMatrix = JMathUtils.createTransformationMatrix(new Vector3(terrain.X,0,terrain.Z), 0, 0, 0, 1);
-            TerrainShader.loadTransformationMatrix(transformationMatrix);
+            TerrainShader.LoadTransformationMatrix(transformationMatrix);
         }
 
         #region VAOControl
