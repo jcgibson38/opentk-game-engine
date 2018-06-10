@@ -98,13 +98,12 @@ namespace JGameEngine.RenderEngine
 
             MasterRenderer = new JMasterRenderer(texturePack);
 
-            WaterShader = new JWaterShader();
-            waterRenderer = new JWaterRenderer(Loader, WaterShader, MasterRenderer.projectionMatrix);
-            waterTiles = new List<JWaterTile>();
-            WaterTile = new JWaterTile(400, -400, 8);
-            waterTiles.Add(WaterTile);
-
             WaterBuffer = new JWaterFrameBuffer(this);
+            WaterShader = new JWaterShader();
+            waterRenderer = new JWaterRenderer(Loader, WaterShader, MasterRenderer.projectionMatrix, WaterBuffer);
+            waterTiles = new List<JWaterTile>();
+            WaterTile = new JWaterTile(400, -400, 10);
+            waterTiles.Add(WaterTile);
 
             terrain = new JPerlinTerrain(0, -1, Loader, texturePack);
 
@@ -115,7 +114,7 @@ namespace JGameEngine.RenderEngine
             EntityList.Add(Entity2);
 
             // Generate Trees
-            JEntityGenerator entityGenerator = new JEntityGenerator(Loader,terrain);
+            JEntityGenerator entityGenerator = new JEntityGenerator(Loader, terrain, WaterTile);
             StaticEntities = entityGenerator.GenerateTrees();
 
             Camera = new JCameraFree();

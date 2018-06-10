@@ -3,6 +3,7 @@ using JGameEngine.Models;
 using JGameEngine.RenderEngine;
 using JGameEngine.Terrains;
 using JGameEngine.Textures;
+using JGameEngine.Water;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,18 @@ namespace JGameEngine.Utils
     {
         private JLoader Loader { get; set; }
         private JPerlinTerrain Terrain { get; set; }
+        private JWaterTile WaterTile { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="loader"></param>
         /// <param name="terrain"></param>
-        public JEntityGenerator(JLoader loader, JPerlinTerrain terrain)
+        public JEntityGenerator(JLoader loader, JPerlinTerrain terrain, JWaterTile waterTile)
         {
             Loader = loader;
             Terrain = terrain;
+            WaterTile = waterTile;
         }
 
         /// <summary>
@@ -51,6 +54,13 @@ namespace JGameEngine.Utils
                 float posX = (float)r.NextDouble() * 800;
                 float posZ = -(float)r.NextDouble() * 800;
                 float posY = Terrain.GetHeightOfTerrain(posX, posZ);
+
+                while (posY < WaterTile.Height)
+                {
+                    posX = (float)r.NextDouble() * 800;
+                    posZ = -(float)r.NextDouble() * 800;
+                    posY = Terrain.GetHeightOfTerrain(posX, posZ);
+                }
 
                 Vector3 orientation = new Vector3((float)r.NextDouble(),0,(float)r.NextDouble());
                 orientation.NormalizeFast();

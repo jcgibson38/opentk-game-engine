@@ -16,11 +16,14 @@ namespace JGameEngine.Water
     {
         public JRawModel WaterQuad { get; set; }
         private JWaterShader WaterShader { get; set; }
+        private JWaterFrameBuffer FrameBuffer { get; set; }
 
-        public JWaterRenderer(JLoader loader, JWaterShader waterShader, Matrix4 projectionMatrix)
+        public JWaterRenderer(JLoader loader, JWaterShader waterShader, Matrix4 projectionMatrix, JWaterFrameBuffer frameBuffer)
         {
             this.WaterShader = waterShader;
+            this.FrameBuffer = frameBuffer;
             WaterShader.start();
+            WaterShader.LoadTextures();
             WaterShader.LoadProjectionMatrix(projectionMatrix);
             WaterShader.stop();
             SetupVAO(loader);
@@ -44,6 +47,10 @@ namespace JGameEngine.Water
             WaterShader.LoadViewMatrix(camera);
             GL.BindVertexArray(WaterQuad.vaoID);
             GL.EnableVertexAttribArray(0);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, FrameBuffer.ReflectionTexture);
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, FrameBuffer.RefractionTexture);
         }
 
         private void Unbind()

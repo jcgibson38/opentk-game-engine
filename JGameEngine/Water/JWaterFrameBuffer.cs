@@ -10,11 +10,11 @@ namespace JGameEngine.Water
 {
     class JWaterFrameBuffer
     {
-        private static readonly int REFLECTION_WIDTH = 320;
-        private static readonly int REFLECTION_HEIGHT = 180;
+        private static readonly int REFLECTION_WIDTH = 1280;
+        private static readonly int REFLECTION_HEIGHT = 720;
 
-        private static readonly int REFRACTION_WIDTH = 1280;
-        private static readonly int REFRACTION_HEIGHT = 720;
+        private static readonly int REFRACTION_WIDTH = 640;
+        private static readonly int REFRACTION_HEIGHT = 360;
 
         public int ReflectionFrameBuffer { get; set; }
         public int ReflectionTexture { get; set; }
