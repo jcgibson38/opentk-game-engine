@@ -137,8 +137,8 @@ namespace JGameEngine.Utils
 
         public static float HeightCurve2(float x)
         {
-            float retVal =  0.9f * x - 1.2f * x * x + -2.1f * x * x * x + 4.1f * x * x * x * x;
-            if(retVal < 0)
+            float retVal = -0.3f + 3.929681f * x - 12.85256f * x *x + 18.57032f * x * x * x - 8.449883f * x * x * x * x;
+            if (retVal < 0)
             {
                 retVal = 0;
             }else if(retVal > 1.0f)

@@ -49,7 +49,7 @@ namespace JGameEngine.Utils
             JTexturedModel TreeTexturedModel = new JTexturedModel(TreeModel, TreeTexture);
             Random r = new Random();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 200; i++)
             {
                 float posX = (float)r.NextDouble() * 800;
                 float posZ = -(float)r.NextDouble() * 800;

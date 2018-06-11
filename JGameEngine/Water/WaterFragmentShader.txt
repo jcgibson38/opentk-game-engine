@@ -1,11 +1,18 @@
 ﻿#version 400 core
 
 in vec4 clipSpaceCoords;
+in vec2 textureCoords;
 
 out vec4 outColor;
 
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
+uniform sampler2D waterTexture;
+uniform sampler2D dudvMap;
+
+uniform float distortionVariance;
+
+const float distortionStrength = 0.01;
 
 void main(void)
 {
@@ -13,8 +20,20 @@ void main(void)
 	vec2 refractionTextureCoords = vec2(deviceSpaceCoords.x, deviceSpaceCoords.y);
 	vec2 reflectionTextureCoords = vec2(deviceSpaceCoords.x, -deviceSpaceCoords.y);
 
+	vec2 distortion1 = (texture(dudvMap, vec2(textureCoords.x + distortionVariance, textureCoords.y)).rg * 2.0 - 1.0) * distortionStrength;
+	vec2 distortion2 = (texture(dudvMap, vec2(-textureCoords.x + distortionVariance, textureCoords.y + distortionVariance)).rg * 2.0 - 1.0) * distortionStrength;
+	vec2 totalDistortion = distortion1 + distortion2;
+
+	refractionTextureCoords += totalDistortion;
+	refractionTextureCoords = clamp(refractionTextureCoords,0.001, 0.999);
+	reflectionTextureCoords += totalDistortion;
+	reflectionTextureCoords.x = clamp(reflectionTextureCoords.x, 0.001, 0.999);
+	reflectionTextureCoords.y = clamp(reflectionTextureCoords.y, -0.999, -0.001);
+
 	vec4 reflectionColor = texture(reflectionTexture, reflectionTextureCoords);
 	vec4 refractionColor = texture(refractionTexture, refractionTextureCoords);
+	vec4 waterColor = texture(waterTexture, textureCoords);
 	
 	outColor = mix(reflectionColor, refractionColor, 0.5);
+	outColor = mix(outColor, waterColor, 0.5);
 }

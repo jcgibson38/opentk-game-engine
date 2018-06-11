@@ -88,10 +88,10 @@ namespace JGameEngine.RenderEngine
 
             JTerrainTexturePack texturePack = new JTerrainTexturePack();
             texturePack.AddTerrainTexture(textureWaterDeep, 0.1f);
-            texturePack.AddTerrainTexture(textureWaterShallow, 0.2f);
-            texturePack.AddTerrainTexture(textureSand, 0.3f);
-            texturePack.AddTerrainTexture(textureGrassNatural, 0.4f);
-            texturePack.AddTerrainTexture(textureGrassLush, 0.5f);
+            texturePack.AddTerrainTexture(textureWaterShallow, 0.15f);
+            texturePack.AddTerrainTexture(textureSand, 0.18f);
+            texturePack.AddTerrainTexture(textureGrassNatural, 0.35f);
+            texturePack.AddTerrainTexture(textureGrassLush, 0.45f);
             texturePack.AddTerrainTexture(textureMountainNatural, 0.6f);
             texturePack.AddTerrainTexture(textureMountainRocky, 0.7f);
             texturePack.AddTerrainTexture(textureSnow, 0.8f);
@@ -100,10 +100,10 @@ namespace JGameEngine.RenderEngine
 
             WaterBuffer = new JWaterFrameBuffer(this);
             WaterShader = new JWaterShader();
-            waterRenderer = new JWaterRenderer(Loader, WaterShader, MasterRenderer.projectionMatrix, WaterBuffer);
             waterTiles = new List<JWaterTile>();
-            WaterTile = new JWaterTile(400, -400, 10);
+            WaterTile = new JWaterTile(400, -400, 8, textureWaterShallow);
             waterTiles.Add(WaterTile);
+            waterRenderer = new JWaterRenderer(Loader, WaterShader, MasterRenderer.projectionMatrix, WaterBuffer, WaterTile);
 
             terrain = new JPerlinTerrain(0, -1, Loader, texturePack);
 
@@ -211,6 +211,11 @@ namespace JGameEngine.RenderEngine
         private static ulong GetCurrentTime()
         {
             return (((ulong)System.DateTime.Now.Ticks * 1000) / (ulong)TimeSpan.TicksPerSecond);
+        }
+
+        public static float FrameTimeSeconds()
+        {
+            return Delta;
         }
     }
 }

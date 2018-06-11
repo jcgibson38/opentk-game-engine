@@ -116,6 +116,7 @@
     <Content Include="res\Terrain\WaterDeep.png" />
     <Content Include="res\Terrain\WaterShallow.png" />
     <Content Include="res\Tree\tree_texture_green_brown.png" />
+    <Content Include="res\waterDUDV.png" />
     <Content Include="Shaders\2DFragmentShader.txt" />
     <Content Include="Shaders\2DVertexShader.txt" />
     <Content Include="Shaders\fragmentShader.txt" />

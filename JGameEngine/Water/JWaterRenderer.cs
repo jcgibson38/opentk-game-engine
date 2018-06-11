@@ -14,14 +14,25 @@ namespace JGameEngine.Water
 {
     class JWaterRenderer
     {
+        private static string dudvMapTexture;
+        private static int dudvMap;
+
+        private static readonly float DISTORTION_SPEED = 0.01f;
+        private float distortionVariance;
+
         public JRawModel WaterQuad { get; set; }
         private JWaterShader WaterShader { get; set; }
         private JWaterFrameBuffer FrameBuffer { get; set; }
+        private JWaterTile WaterTile { get; set; }
 
-        public JWaterRenderer(JLoader loader, JWaterShader waterShader, Matrix4 projectionMatrix, JWaterFrameBuffer frameBuffer)
+        public JWaterRenderer(JLoader loader, JWaterShader waterShader, Matrix4 projectionMatrix, JWaterFrameBuffer frameBuffer, JWaterTile waterTile)
         {
             this.WaterShader = waterShader;
             this.FrameBuffer = frameBuffer;
+            this.WaterTile = waterTile;
+            dudvMapTexture = JFileUtils.GetPathToResFile("waterDUDV.png");
+            dudvMap = loader.loadTexture(dudvMapTexture);
+            distortionVariance = 0;
             WaterShader.start();
             WaterShader.LoadTextures();
             WaterShader.LoadProjectionMatrix(projectionMatrix);
@@ -45,12 +56,21 @@ namespace JGameEngine.Water
         {
             WaterShader.start();
             WaterShader.LoadViewMatrix(camera);
+
+            distortionVariance += DISTORTION_SPEED * JGameWindow.FrameTimeSeconds();
+            distortionVariance %= 1.0f;
+            WaterShader.LoadDistortionVariance(distortionVariance);
+
             GL.BindVertexArray(WaterQuad.vaoID);
             GL.EnableVertexAttribArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, FrameBuffer.ReflectionTexture);
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, FrameBuffer.RefractionTexture);
+            GL.ActiveTexture(TextureUnit.Texture2);
+            GL.BindTexture(TextureTarget.Texture2D, WaterTile.ColorTexture.TextureID);
+            GL.ActiveTexture(TextureUnit.Texture3);
+            GL.BindTexture(TextureTarget.Texture2D, dudvMap);
         }
 
         private void Unbind()

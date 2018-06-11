@@ -20,6 +20,9 @@ namespace JGameEngine.Water
         private int location_projectectionMatrix;
         private int location_reflectionTexture;
         private int location_refractionTexture;
+        private int location_waterTexture;
+        private int location_dudvMap;
+        private int location_distortionVariance;
 
         public JWaterShader() : base(VERTEX_FILE, FRAGMENT_FILE)
         {
@@ -38,12 +41,22 @@ namespace JGameEngine.Water
             location_modelMatrix = getUnifromLocation("modelMatrix");
             location_reflectionTexture = getUnifromLocation("reflectionTexture");
             location_refractionTexture = getUnifromLocation("refractionTexture");
+            location_waterTexture = getUnifromLocation("waterTexture");
+            location_dudvMap = getUnifromLocation("dudvMap");
+            location_distortionVariance = getUnifromLocation("distortionVariance");
         }
 
         public void LoadTextures()
         {
             base.LoadInt(location_reflectionTexture, 0);
             base.LoadInt(location_refractionTexture, 1);
+            base.LoadInt(location_waterTexture, 2);
+            base.LoadInt(location_dudvMap, 3);
+        }
+
+        public void LoadDistortionVariance(float value)
+        {
+            base.loadFloat(location_distortionVariance, value);
         }
 
         public void LoadProjectionMatrix(Matrix4 projection)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JGameEngine.Textures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,14 @@ namespace JGameEngine.Water
         public float Height { get; set; }
         public float X { get; set; }
         public float Z { get; set; }
+        public JTerrainTexture ColorTexture { get; set; }
 
-        public JWaterTile(float centerX, float centerZ, float height)
+        public JWaterTile(float centerX, float centerZ, float height, JTerrainTexture colorTexture)
         {
             this.X = centerX;
             this.Z = centerZ;
             this.Height = height;
+            this.ColorTexture = colorTexture;
         }
     }
 }
