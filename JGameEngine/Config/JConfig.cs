@@ -37,5 +37,10 @@ namespace JGameEngine.Config
         /// 
         /// </summary>
         public static readonly float MAX_TERRAIN_HEIGHT = 50.0f;
+
+        /// <summary>
+        /// The translational movement speed of the JCamera.
+        /// </summary>
+        public static readonly float JCAMERA_MOVEMENT_SPEED = 10.0f;
     }
 }

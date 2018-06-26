@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\JConfig.cs" />
+    <Compile Include="Entities\Camera\JCameraLocked.cs" />
     <Compile Include="Entities\Collision\JBoundingSphere.cs" />
     <Compile Include="Entities\Camera\JCamera.cs" />
     <Compile Include="Entities\Camera\JCameraThirdPerson.cs" />
