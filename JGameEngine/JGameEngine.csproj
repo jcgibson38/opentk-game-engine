@@ -105,6 +105,8 @@
     <Content Include="res\BoundingSphereTextureUnselected.png" />
     <Content Include="res\Cowboy\CowboyTexture.png" />
     <Content Include="res\GrassTexture.png" />
+    <Content Include="res\matchingNormalMap.png" />
+    <Content Include="res\normalMap.png" />
     <Content Include="res\Smile.png" />
     <Content Include="res\stallTexture.png" />
     <Content Include="res\Terrain\Grass.png" />

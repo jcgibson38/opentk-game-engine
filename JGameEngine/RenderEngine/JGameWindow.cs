@@ -195,7 +195,7 @@ namespace JGameEngine.RenderEngine
 
             GL.Disable(EnableCap.ClipDistance0);
             MasterRenderer.RenderScene(EntityList, StaticEntities, terrain, Light, Camera, new Vector4(0, -1, 0, 20));
-            waterRenderer.Render(waterTiles, Camera);
+            waterRenderer.Render(waterTiles, Camera, Light);
             this.SwapBuffers();
         }
 

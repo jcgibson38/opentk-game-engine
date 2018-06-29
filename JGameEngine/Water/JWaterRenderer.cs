@@ -1,4 +1,5 @@
-﻿using JGameEngine.Entities.Camera;
+﻿using JGameEngine.Entities;
+using JGameEngine.Entities.Camera;
 using JGameEngine.Models;
 using JGameEngine.RenderEngine;
 using JGameEngine.Utils;
@@ -17,6 +18,9 @@ namespace JGameEngine.Water
         private static string dudvMapTexture;
         private static int dudvMap;
 
+        private static string normalMapTexture;
+        private static int normalMap;
+
         private static readonly float DISTORTION_SPEED = 0.01f;
         private float distortionVariance;
 
@@ -31,7 +35,9 @@ namespace JGameEngine.Water
             this.FrameBuffer = frameBuffer;
             this.WaterTile = waterTile;
             dudvMapTexture = JFileUtils.GetPathToResFile("waterDUDV.png");
+            normalMapTexture = JFileUtils.GetPathToResFile("matchingNormalMap.png");
             dudvMap = loader.loadTexture(dudvMapTexture);
+            normalMap = loader.loadTexture(normalMapTexture);
             distortionVariance = 0;
             WaterShader.start();
             WaterShader.LoadTextures();
@@ -40,9 +46,9 @@ namespace JGameEngine.Water
             SetupVAO(loader);
         }
 
-        public void Render(List<JWaterTile> waterTiles, JCamera camera)
+        public void Render(List<JWaterTile> waterTiles, JCamera camera, JLight light)
         {
-            PrepareRender(camera);
+            PrepareRender(camera, light);
             foreach(JWaterTile tile in waterTiles)
             {
                 Matrix4 modelMatrix = JMathUtils.createTransformationMatrix(new Vector3(tile.X, tile.Height, tile.Z), 0, 0, 0, JWaterTile.TILE_SIZE);
@@ -52,7 +58,7 @@ namespace JGameEngine.Water
             Unbind();
         }
 
-        private void PrepareRender(JCamera camera)
+        private void PrepareRender(JCamera camera, JLight light)
         {
             WaterShader.start();
             WaterShader.LoadViewMatrix(camera);
@@ -60,6 +66,7 @@ namespace JGameEngine.Water
             distortionVariance += DISTORTION_SPEED * JGameWindow.FrameTimeSeconds();
             distortionVariance %= 1.0f;
             WaterShader.LoadDistortionVariance(distortionVariance);
+            WaterShader.LoadLight(light);
 
             GL.BindVertexArray(WaterQuad.vaoID);
             GL.EnableVertexAttribArray(0);
@@ -71,6 +78,8 @@ namespace JGameEngine.Water
             GL.BindTexture(TextureTarget.Texture2D, WaterTile.ColorTexture.TextureID);
             GL.ActiveTexture(TextureUnit.Texture3);
             GL.BindTexture(TextureTarget.Texture2D, dudvMap);
+            GL.ActiveTexture(TextureUnit.Texture4);
+            GL.BindTexture(TextureTarget.Texture2D, normalMap);
         }
 
         private void Unbind()

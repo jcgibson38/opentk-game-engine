@@ -1,4 +1,5 @@
-﻿using JGameEngine.Entities.Camera;
+﻿using JGameEngine.Entities;
+using JGameEngine.Entities.Camera;
 using JGameEngine.Shaders;
 using JGameEngine.Utils;
 using OpenTK;
@@ -24,6 +25,9 @@ namespace JGameEngine.Water
         private int location_dudvMap;
         private int location_distortionVariance;
         private int location_cameraPosition;
+        private int location_normalMap;
+        private int location_lightColor;
+        private int location_lightPosition;
 
         public JWaterShader() : base(VERTEX_FILE, FRAGMENT_FILE)
         {
@@ -46,6 +50,9 @@ namespace JGameEngine.Water
             location_dudvMap = getUnifromLocation("dudvMap");
             location_distortionVariance = getUnifromLocation("distortionVariance");
             location_cameraPosition = getUnifromLocation("cameraPosition");
+            location_normalMap = getUnifromLocation("normalMap");
+            location_lightColor = getUnifromLocation("lightColor");
+            location_lightPosition = getUnifromLocation("lightPosition");
         }
 
         public void LoadTextures()
@@ -54,6 +61,13 @@ namespace JGameEngine.Water
             base.LoadInt(location_refractionTexture, 1);
             base.LoadInt(location_waterTexture, 2);
             base.LoadInt(location_dudvMap, 3);
+            base.LoadInt(location_normalMap, 4);
+        }
+
+        public void LoadLight(JLight light)
+        {
+            base.LoadVector(location_lightColor, light.Color);
+            base.LoadVector(location_lightPosition, light.Position);
         }
 
         public void LoadDistortionVariance(float value)
